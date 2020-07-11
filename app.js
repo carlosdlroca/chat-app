@@ -1,19 +1,17 @@
 let express = require("express");
 let http = require("http");
 let morgan = require("morgan");
-let socketio = require("socket.io");
+let path = require("path");
 let app = express();
-
 let server = http.createServer(app);
-let socket = socketio(server);
 
 const PORT = process.env.PORT || 3001;
-app.use(morgan("dev"));
 
-// Run wehn client connects
-socket.on("connection", (socket) => {
-    console.log("New WS Connecttion...");
-});
+// Initialize and link socket to server
+require("./config/socket.js")(server);
+
+app.use(morgan("dev"));
+app.use(express.static(path.join(__dirname, "client/build")));
 
 app.get("/", (req, res) => {
     res.send("this is an index page");
