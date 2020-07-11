@@ -1,0 +1,23 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carlosdlroca/chat-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carlosdlroca/chat-app/issues"
+  },
+  "homepage": "https://github.com/carlosdlroca/chat-app#readme",
+  "dependencies": {
+    "concurrently": "^5.2.0"
+  }
+}
