@@ -1,4 +1,5 @@
-let mongoose = require("mongoose");
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 let userSchema = mongoose.Schema({
     username: {
@@ -11,5 +12,32 @@ let userSchema = mongoose.Schema({
         required: true,
     },
 });
+
+userSchema.pre("save", async function hashPassword(next) {
+    try {
+        if (!this.isModified("password")) {
+            return next();
+        }
+
+        let hashedPassword = await bcrypt.hash(this.password, 10);
+        this.password = hashedPassword;
+
+        return next();
+    } catch (err) {
+        return next(err);
+    }
+});
+
+userSchema.methods.comparePassword = async function comparePassword(
+    candidatePassword,
+    next
+) {
+    try {
+        let isMatch = await bcrypt.compare(candidatePassword, this.password);
+        return isMatch;
+    } catch (err) {
+        return next(err);
+    }
+};
 
 module.exports = mongoose.model("User", userSchema);
