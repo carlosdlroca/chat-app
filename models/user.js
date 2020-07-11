@@ -1,5 +1,4 @@
 let mongoose = require("mongoose");
-let passportLocalMongoose = require("passport-local-mongoose");
 
 let userSchema = mongoose.Schema({
     username: {
@@ -12,7 +11,5 @@ let userSchema = mongoose.Schema({
         required: true,
     },
 });
-
-userSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("User", userSchema);
