@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
     Form,
     FormTitle,
@@ -7,26 +7,28 @@ import {
     Input,
 } from "shared/components/Form";
 import { PrimaryButton } from "shared/components/Button";
-import api from "shared/utils/api";
+import { authUser } from "store/actions/auth";
+import { StoreContext } from "store/";
 
 export default function AuthForm({ authAction, authTitle }) {
-    const [inputValues, setInputValues] = useState({
+    const [state, dispatch] = useContext(StoreContext);
+    const [userData, setUserData] = useState({
         username: "",
         password: "",
     });
 
     function handleInputChange(e) {
         e.persist();
-        setInputValues((prevValues) => ({
-            ...prevValues,
+        setUserData((prevData) => ({
+            ...prevData,
             [e.target.name]: e.target.value,
         }));
     }
 
     async function handleFormSubmit(e) {
         e.preventDefault();
-        const token = await api("POST", `/api/auth/${authAction}`, inputValues);
-        console.log(token);
+        const setUserAction = await authUser(authAction, userData);
+        dispatch(setUserAction);
     }
 
     return (
@@ -36,7 +38,7 @@ export default function AuthForm({ authAction, authTitle }) {
                 <InputLabel>Username</InputLabel>
                 <Input
                     type='text'
-                    value={inputValues.username}
+                    value={userData.username}
                     name='username'
                     onChange={handleInputChange}
                     placeholder={"Enter Your username"}
@@ -46,7 +48,7 @@ export default function AuthForm({ authAction, authTitle }) {
                 <InputLabel>Password</InputLabel>
                 <Input
                     type='text'
-                    value={inputValues.password}
+                    value={userData.password}
                     name='password'
                     onChange={handleInputChange}
                     placeholder={"Enter your password"}
