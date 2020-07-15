@@ -12,9 +12,14 @@ export async function authUser(authAction, userData) {
             `/api/auth/${authAction}`,
             userData
         );
+
+        if (user.error) {
+            return setUser({});
+        }
+
         localStorage.setItem("jwtToken", token);
         return setUser(user);
     } catch (err) {
-        return err;
+        return setUser({});
     }
 }
