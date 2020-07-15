@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Form = styled.form`
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
 `;
 
 export const FormTitle = styled.h1`
@@ -14,8 +14,7 @@ export const FormTitle = styled.h1`
 export const InputGroup = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-
+    align-items: center;
     &:not(:last-child) {
         margin-bottom: 1.5rem;
     }
@@ -29,9 +28,25 @@ export const InputLabel = styled.label`
 `;
 
 export const Input = styled.input`
+    appearance: none;
+    background-color: rgba(255, 255, 255, 0.6);
+    border: none;
+    color: palevioletred;
     font-size: 2rem;
-    padding: 0.5rem;
+    padding: 1rem 0.5rem;
+    outline: 0;
+    text-align: center;
+    width: 100%;
+    transition: all 0.3s ease;
+
     &::placeholder {
+        color: white;
         font-size: 1.8rem;
+    }
+
+    &:active,
+    &:focus {
+        background-color: white;
+        width: 115%;
     }
 `;

@@ -14,7 +14,7 @@ export default createGlobalStyle`
     }
 
     body {
-        background-color: papayawhip;
-        color: palevioletred;
+        background-color: #ffae8f;
+        color: #ff677d;
     }
 `;
