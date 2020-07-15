@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/carlosdlroca/chat-app#readme",
   "dependencies": {
-    "concurrently": "^5.2.0"
+    "concurrently": "^5.2.0",
+    "jwt-decode": "^2.2.0"
   }
 }
