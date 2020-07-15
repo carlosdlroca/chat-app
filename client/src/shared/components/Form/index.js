@@ -29,7 +29,7 @@ export const InputLabel = styled.label`
 
 export const Input = styled.input`
     appearance: none;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.5);
     border: none;
     color: palevioletred;
     font-size: 2rem;
@@ -47,6 +47,6 @@ export const Input = styled.input`
     &:active,
     &:focus {
         background-color: white;
-        width: 115%;
+        width: 121%;
     }
 `;
