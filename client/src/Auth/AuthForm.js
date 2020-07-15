@@ -1,9 +1,16 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { Form, FormTitle, InputGroup, Input } from "shared/components/Form";
+import {
+    Form,
+    FormTitle,
+    InputGroup,
+    Input,
+    ErrMessage,
+} from "shared/components/Form";
 import { PrimaryButton } from "shared/components/Button";
 import { authUser } from "store/actions/auth";
 import { StoreContext } from "store/";
+import { useAlert } from "react-alert";
 
 export default function AuthForm({ authAction, authTitle }) {
     const [state, dispatch] = useContext(StoreContext);
@@ -12,6 +19,7 @@ export default function AuthForm({ authAction, authTitle }) {
         password: "",
     });
     const history = useHistory();
+    const alert = useAlert();
 
     function handleInputChange(e) {
         e.persist();
@@ -25,6 +33,12 @@ export default function AuthForm({ authAction, authTitle }) {
         e.preventDefault();
         const setUserAction = await authUser(authAction, userData);
         dispatch(setUserAction);
+        if (setUserAction.errMessage) {
+            alert.error(setUserAction.errMessage);
+            setUserData({ username: "", password: "" });
+            document.activeElement.blur();
+            return;
+        }
         history.push("/");
     }
 
@@ -43,7 +57,7 @@ export default function AuthForm({ authAction, authTitle }) {
             </InputGroup>
             <InputGroup>
                 <Input
-                    type='text'
+                    type='password'
                     value={userData.password}
                     name='password'
                     onChange={handleInputChange}
