@@ -1,5 +1,7 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useEffect } from "react";
+import jwtDecode from "jwt-decode";
 import { SET_CURRENT_USER } from "./actionTypes";
+import { setUser } from "./actions/auth";
 
 const initialState = {
     isAuthenticated: false,
@@ -22,6 +24,16 @@ export const StoreContext = createContext({});
 
 export default function StoreProvider({ children }) {
     const [state, dispatch] = useReducer(reducer, initialState);
+
+    useEffect(() => {
+        if (localStorage.jwtToken) {
+            try {
+                dispatch(setUser(jwtDecode(localStorage.jwtToken)));
+            } catch (e) {
+                dispatch(setUser({}));
+            }
+        }
+    }, []);
     return (
         <StoreContext.Provider value={[state, dispatch]}>
             {children}
