@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Navbar from "./Navbar";
+import Navbar from "App/Navbar";
 import AuthPage from "Auth/AuthPage";
 
 export default function Routes() {
