@@ -42,6 +42,7 @@ export default function AuthForm({ authAction, authTitle }) {
                     name='username'
                     onChange={handleInputChange}
                     placeholder={"Enter Your username"}
+                    required
                 />
             </InputGroup>
             <InputGroup>
@@ -52,6 +53,7 @@ export default function AuthForm({ authAction, authTitle }) {
                     name='password'
                     onChange={handleInputChange}
                     placeholder={"Enter your password"}
+                    required
                 />
             </InputGroup>
             <PrimaryButton>{authTitle}</PrimaryButton>
