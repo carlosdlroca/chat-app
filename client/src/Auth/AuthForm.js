@@ -1,11 +1,6 @@
 import React, { useState, useContext } from "react";
-import {
-    Form,
-    FormTitle,
-    InputGroup,
-    InputLabel,
-    Input,
-} from "shared/components/Form";
+import { useHistory } from "react-router-dom";
+import { Form, FormTitle, InputGroup, Input } from "shared/components/Form";
 import { PrimaryButton } from "shared/components/Button";
 import { authUser } from "store/actions/auth";
 import { StoreContext } from "store/";
@@ -16,6 +11,7 @@ export default function AuthForm({ authAction, authTitle }) {
         username: "",
         password: "",
     });
+    const history = useHistory();
 
     function handleInputChange(e) {
         e.persist();
@@ -29,30 +25,29 @@ export default function AuthForm({ authAction, authTitle }) {
         e.preventDefault();
         const setUserAction = await authUser(authAction, userData);
         dispatch(setUserAction);
+        history.push("/");
     }
 
     return (
         <Form onSubmit={handleFormSubmit}>
             <FormTitle>{authTitle}</FormTitle>
             <InputGroup>
-                <InputLabel>Username</InputLabel>
                 <Input
                     type='text'
                     value={userData.username}
                     name='username'
                     onChange={handleInputChange}
-                    placeholder={"Enter Your username"}
+                    placeholder={"Username"}
                     required
                 />
             </InputGroup>
             <InputGroup>
-                <InputLabel>Password</InputLabel>
                 <Input
                     type='text'
                     value={userData.password}
                     name='password'
                     onChange={handleInputChange}
-                    placeholder={"Enter your password"}
+                    placeholder={"Password"}
                     required
                 />
             </InputGroup>
