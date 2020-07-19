@@ -9,6 +9,8 @@ export const Form = styled.form`
 export const FormTitle = styled.h1`
     font-size: 2.7rem;
     margin-bottom: 1rem;
+    text-align: center;
+    text-transform: capitalize;
 `;
 
 export const InputGroup = styled.div`
@@ -16,7 +18,7 @@ export const InputGroup = styled.div`
     flex-direction: column;
     align-items: center;
     &:not(:last-child) {
-        margin-bottom: 1.5rem;
+        margin-bottom: 2rem;
     }
 `;
 
