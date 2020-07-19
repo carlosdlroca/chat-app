@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Button = styled.button`
     border: none;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     box-shadow: 0 0.5rem 0.2rem rgba(0, 0, 0, 0.2);
     color: white;
     font-size: 2rem;
@@ -22,17 +22,17 @@ const Button = styled.button`
 `;
 
 export const PrimaryButton = styled(Button)`
-    background-color: green;
+    background-color: var(--color-primary);
 `;
 
 export const SecondaryButton = styled(Button)`
-    background-color: steelblue;
+    background-color: var(--color-secondary);
+`;
+
+export const InfoButton = styled(Button)`
+    background-color: var(--color-info);
 `;
 
 export const WarningButton = styled(Button)`
-    background-color: orangered;
-`;
-
-export const DangerButton = styled(Button)`
-    background-color: red;
+    background-color: var(--color-warning);
 `;
