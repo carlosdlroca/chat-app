@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Navbar from "App/Navbar";
 import AuthPage from "Auth/AuthPage";
+import useAuthorization from "shared/hooks/useAuthorization";
 
 export default function Routes() {
     return (
@@ -12,13 +13,13 @@ export default function Routes() {
                 <Route
                     path='/auth/signin'
                     component={() => (
-                        <AuthPage authAction={"signin"} authTitle={"Sign In"} />
+                        <AuthPage authAction={"signin"} authTitle={"Sign in"} />
                     )}
                 />
                 <Route
                     path='/auth/signup'
                     component={() => (
-                        <AuthPage authAction={"signup"} authTitle={"Sign UP"} />
+                        <AuthPage authAction={"signup"} authTitle={"Sign up"} />
                     )}
                 />
             </Switch>

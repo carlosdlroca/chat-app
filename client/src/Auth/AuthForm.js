@@ -1,12 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import {
-    Form,
-    FormTitle,
-    InputGroup,
-    Input,
-    ErrMessage,
-} from "shared/components/Form";
+import { Form, FormTitle, InputGroup, Input } from "shared/components/Form";
 import { PrimaryButton } from "shared/components/Button";
 import { authUser } from "store/actions/auth";
 import { StoreContext } from "store/";

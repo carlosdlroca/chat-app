@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { StyledNavbar, NavLinks, NavLink, NavItem } from "./Styles";
 import { StoreContext } from "store/";
 import { logout } from "store/actions/auth";
+import { useAlert } from "react-alert";
 
 export default function Navbar() {
     const [{ isAuthenticated, user }, dispatch] = useContext(StoreContext);
+    const alert = useAlert();
     return (
         <StyledNavbar>
             <NavLinks>
@@ -15,7 +17,12 @@ export default function Navbar() {
                 {isAuthenticated ? (
                     <>
                         <NavItem>Welcome, {user.username}</NavItem>
-                        <NavLink onClick={() => dispatch(logout())}>
+                        <NavLink
+                            onClick={() => {
+                                dispatch(logout());
+                                alert.success("Successfully logged out");
+                            }}
+                        >
                             Logout
                         </NavLink>
                     </>
