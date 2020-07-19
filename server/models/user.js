@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const Chatroom = require("./chatroom");
 
 let userSchema = mongoose.Schema({
     username: {
@@ -11,6 +12,18 @@ let userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    chatrooms_owned: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Chatroom",
+        },
+    ],
+    chatrooms_joined: [
+        {
+            type: mongoose.SchemaType.Types.ObjectId,
+            ref: "Chatroom",
+        },
+    ],
 });
 
 userSchema.pre("save", async function hashPassword(next) {
@@ -22,6 +35,15 @@ userSchema.pre("save", async function hashPassword(next) {
         let hashedPassword = await bcrypt.hash(this.password, 10);
         this.password = hashedPassword;
 
+        return next();
+    } catch (err) {
+        return next(err);
+    }
+});
+
+userSchema.pre("remove", async function (next) {
+    try {
+        Chatroom.remove({ chatroom_owner: this.id });
         return next();
     } catch (err) {
         return next(err);
