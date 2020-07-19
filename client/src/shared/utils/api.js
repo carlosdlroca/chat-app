@@ -4,6 +4,7 @@ export default async function api(method, url, body) {
         body: JSON.stringify(body),
         headers: new Headers({
             "Content-Type": "application/json",
+            Authorization: `Bearer ${getJWTToken()}`,
         }),
     });
 
@@ -16,4 +17,8 @@ export default async function api(method, url, body) {
             error: { message: "Something went wrong using api function" },
         };
     }
+}
+
+function getJWTToken() {
+    return localStorage.getItem("jwtToken");
 }
