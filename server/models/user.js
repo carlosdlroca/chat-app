@@ -20,10 +20,11 @@ let userSchema = mongoose.Schema({
     ],
     chatrooms_joined: [
         {
-            type: mongoose.SchemaType.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: "Chatroom",
         },
     ],
+    isAdmin: Boolean,
 });
 
 userSchema.pre("save", async function hashPassword(next) {
