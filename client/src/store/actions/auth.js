@@ -10,6 +10,10 @@ export function logout() {
     return setUser({});
 }
 
+export function setError(errMessage) {
+    return { type: "ERROR", errMessage };
+}
+
 export async function authUser(authAction, userData) {
     try {
         const { token, ...user } = await api(
@@ -19,7 +23,7 @@ export async function authUser(authAction, userData) {
         );
 
         if (user.error) {
-            return logout();
+            return setError(user.error.message);
         }
 
         localStorage.setItem("jwtToken", token);
