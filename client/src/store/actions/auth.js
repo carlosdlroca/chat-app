@@ -28,15 +28,13 @@ export function authUser(authAction, userData) {
             );
 
             if (user.error) {
-                console.log("pop");
                 dispatch(addError(user.error.message));
-                history.push(`/auth/${authAction}`);
                 return;
             }
             localStorage.setItem("jwtToken", token);
             dispatch(setCurrentUser(user));
             dispatch(removeError());
-            history.push("/");
+            history.history.push("/");
         } catch (err) {
             dispatch(addError("Something went wrong"));
             history.push(`/auth/${authAction}`);

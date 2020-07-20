@@ -6,9 +6,9 @@ import { useAlert } from "react-alert";
 
 import { connect } from "react-redux";
 import { authUser } from "store/actions/auth";
-import { addError } from "store/actions/errors";
+import { removeError } from "store/actions/errors";
 
-function AuthForm({ authMethod, authTitle, authUser, addError, error }) {
+function AuthForm({ authMethod, authTitle, authUser, error, removeError }) {
     const [userData, setUserData] = useState({
         username: "",
         password: "",
@@ -18,8 +18,11 @@ function AuthForm({ authMethod, authTitle, authUser, addError, error }) {
     useEffect(() => {
         if (error && error.message) {
             alert.error(error.message);
+            removeError();
+            setUserData({ username: "", password: "" });
+            document.activeElement.blur();
         }
-    }, [error]);
+    }, [error, alert, removeError, setUserData]);
 
     function handleInputChange(e) {
         const { target } = e;
@@ -29,17 +32,9 @@ function AuthForm({ authMethod, authTitle, authUser, addError, error }) {
         }));
     }
 
-    async function handleFormSubmit(e) {
+    function handleFormSubmit(e) {
         e.preventDefault();
-        try {
-            await authUser(authMethod, userData);
-            setUserData({ username: "", password: "" });
-            document.activeElement.blur();
-        } catch (err) {
-            setUserData({ username: "", password: "" });
-            document.activeElement.blur();
-            return;
-        }
+        authUser(authMethod, userData);
     }
 
     return (
@@ -72,4 +67,4 @@ function AuthForm({ authMethod, authTitle, authUser, addError, error }) {
 
 const mapStateToProps = ({ error }) => ({ error });
 
-export default connect(mapStateToProps, { authUser, addError })(AuthForm);
+export default connect(mapStateToProps, { authUser, removeError })(AuthForm);
