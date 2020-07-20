@@ -2,10 +2,10 @@ import React from "react";
 import AuthForm from "./AuthForm";
 import { StyledAuthPage } from "./Styles";
 
-export default function AuthPage({ authAction, authTitle }) {
+export default function AuthPage({ authMethod, authTitle }) {
     return (
         <StyledAuthPage>
-            <AuthForm authAction={authAction} authTitle={authTitle} />
+            <AuthForm authMethod={authMethod} authTitle={authTitle} />
         </StyledAuthPage>
     );
 }

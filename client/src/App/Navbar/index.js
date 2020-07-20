@@ -1,13 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { StyledNavbar, NavLinks, NavLink, NavItem } from "./Styles";
-import { StoreContext } from "store/";
-import { logout } from "store/actions/auth";
 import { useAlert } from "react-alert";
 
-export default function Navbar() {
-    const [{ isAuthenticated, user }, dispatch] = useContext(StoreContext);
+import { logout } from "store/actions/auth";
+import { connect } from "react-redux";
+
+function Navbar({ currentUser, logout }) {
     const alert = useAlert();
+    const { isAuthenticated, user } = currentUser;
     return (
         <StyledNavbar>
             <NavLinks>
@@ -19,7 +20,7 @@ export default function Navbar() {
                         <NavItem>Welcome, {user.username}</NavItem>
                         <NavLink
                             onClick={() => {
-                                dispatch(logout());
+                                logout();
                                 alert.success("Successfully logged out");
                             }}
                         >
@@ -41,3 +42,9 @@ export default function Navbar() {
         </StyledNavbar>
     );
 }
+
+const mapStateToProps = ({ currentUser }) => ({
+    currentUser,
+});
+
+export default connect(mapStateToProps, { logout })(Navbar);

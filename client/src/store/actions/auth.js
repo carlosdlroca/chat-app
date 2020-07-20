@@ -1,34 +1,45 @@
 import { SET_CURRENT_USER } from "../actionTypes";
+import { addError, removeError } from "./errors";
 import api from "shared/utils/api";
+import history from "shared/history";
 
-export function setUser(user) {
-    return { type: SET_CURRENT_USER, user };
+export function setCurrentUser(user) {
+    return {
+        type: SET_CURRENT_USER,
+        user,
+    };
 }
 
 export function logout() {
-    localStorage.clear();
-    return setUser({});
+    return (dispatch) => {
+        localStorage.clear();
+        dispatch(setCurrentUser({}));
+        history.push("/");
+    };
 }
 
-export function setError(errMessage) {
-    return { type: "ERROR", errMessage };
-}
+export function authUser(authAction, userData) {
+    return async (dispatch) => {
+        try {
+            const { token, ...user } = await api(
+                "POST",
+                `/api/auth/${authAction}`,
+                userData
+            );
 
-export async function authUser(authAction, userData) {
-    try {
-        const { token, ...user } = await api(
-            "POST",
-            `/api/auth/${authAction}`,
-            userData
-        );
-
-        if (user.error) {
-            return setError(user.error.message);
+            if (user.error) {
+                console.log("pop");
+                dispatch(addError(user.error.message));
+                history.push(`/auth/${authAction}`);
+                return;
+            }
+            localStorage.setItem("jwtToken", token);
+            dispatch(setCurrentUser(user));
+            dispatch(removeError());
+            history.push("/");
+        } catch (err) {
+            dispatch(addError("Something went wrong"));
+            history.push(`/auth/${authAction}`);
         }
-
-        localStorage.setItem("jwtToken", token);
-        return setUser(user);
-    } catch (err) {
-        return setUser({});
-    }
+    };
 }

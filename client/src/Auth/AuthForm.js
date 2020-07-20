@@ -1,39 +1,45 @@
-import React, { useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+
 import { Form, FormTitle, InputGroup, Input } from "shared/components/Form";
 import { PrimaryButton } from "shared/components/Button";
-import { authUser } from "store/actions/auth";
-import { StoreContext } from "store/";
 import { useAlert } from "react-alert";
 
-export default function AuthForm({ authAction, authTitle }) {
-    const [state, dispatch] = useContext(StoreContext);
+import { connect } from "react-redux";
+import { authUser } from "store/actions/auth";
+import { addError } from "store/actions/errors";
+
+function AuthForm({ authMethod, authTitle, authUser, addError, error }) {
     const [userData, setUserData] = useState({
         username: "",
         password: "",
     });
-    const history = useHistory();
     const alert = useAlert();
 
+    useEffect(() => {
+        if (error && error.message) {
+            alert.error(error.message);
+        }
+    }, [error]);
+
     function handleInputChange(e) {
-        e.persist();
+        const { target } = e;
         setUserData((prevData) => ({
             ...prevData,
-            [e.target.name]: e.target.value,
+            [target.name]: target.value,
         }));
     }
 
     async function handleFormSubmit(e) {
         e.preventDefault();
-        const setUserAction = await authUser(authAction, userData);
-        dispatch(setUserAction);
-        if (setUserAction.errMessage) {
-            alert.error(setUserAction.errMessage);
+        try {
+            await authUser(authMethod, userData);
+            setUserData({ username: "", password: "" });
+            document.activeElement.blur();
+        } catch (err) {
             setUserData({ username: "", password: "" });
             document.activeElement.blur();
             return;
         }
-        history.push("/");
     }
 
     return (
@@ -63,3 +69,7 @@ export default function AuthForm({ authAction, authTitle }) {
         </Form>
     );
 }
+
+const mapStateToProps = ({ error }) => ({ error });
+
+export default connect(mapStateToProps, { authUser, addError })(AuthForm);
