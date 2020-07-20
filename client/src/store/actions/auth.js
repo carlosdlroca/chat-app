@@ -33,8 +33,7 @@ export function authUser(authAction, userData) {
             }
             localStorage.setItem("jwtToken", token);
             dispatch(setCurrentUser(user));
-            dispatch(removeError());
-            history.history.push("/");
+            history.push("/");
         } catch (err) {
             dispatch(addError("Something went wrong"));
             history.push(`/auth/${authAction}`);
