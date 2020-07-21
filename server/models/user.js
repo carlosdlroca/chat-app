@@ -42,12 +42,20 @@ userSchema.pre("save", async function hashPassword(next) {
     }
 });
 
-userSchema.pre("remove", async function (next) {
+userSchema.pre("deleteOne", async function (next) {
     try {
-        Chatroom.remove({ chatroom_owner: this.id });
-        return next();
+        // Delete chatrooms user is an owner of
+        await Chatroom.deleteMany({ owner: this.id });
+        // Remove user from joined chatrooms
+        for (const chatroom_id of this.chatrooms_joined) {
+            const joinedChatroom = await Chatroom.find({ id: chatroom_id });
+            joinedChatroom.users = joinedChatroom.users.filter(
+                (user) => user.id !== this.id
+            );
+            await joinedChatroom.save();
+        }
     } catch (err) {
-        return next(err);
+        next(err);
     }
 });
 
