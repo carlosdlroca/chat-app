@@ -8,6 +8,7 @@ const server = http.createServer(app);
 const errorHandler = require("./handlers/error");
 
 const authRoutes = require("./routes/auth");
+const chatroomRoutes = require("./routes/chatrooms");
 
 const PORT = process.env.PORT || 3001;
 
@@ -15,7 +16,9 @@ const PORT = process.env.PORT || 3001;
 require("./config/socket.js")(server);
 app.use(morgan("dev"));
 app.use(bodyParser.json());
+
 app.use("/api/auth", authRoutes);
+app.use("/api/chatrooms", chatroomRoutes);
 
 app.use((req, res, next) => {
     const error = new Error("Not Found!");
