@@ -12,10 +12,6 @@ const messageSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
         },
-        chatroom_id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Chatroom",
-        },
     },
     {
         timestamps: true,
