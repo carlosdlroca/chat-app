@@ -6,9 +6,8 @@ import { useAlert } from "react-alert";
 
 import { connect } from "react-redux";
 import { authUser } from "store/actions/auth";
-import { removeError } from "store/actions/errors";
 
-function AuthForm({ authMethod, authTitle, authUser, error, removeError }) {
+function AuthForm({ authMethod, authTitle, authUser, error }) {
     const [userData, setUserData] = useState({
         username: "",
         password: "",
@@ -18,7 +17,6 @@ function AuthForm({ authMethod, authTitle, authUser, error, removeError }) {
     useEffect(() => {
         if (error && error.message) {
             alert.error(error.message);
-            removeError();
             setUserData({ username: "", password: "" });
             document.activeElement.blur();
         }
@@ -67,4 +65,4 @@ function AuthForm({ authMethod, authTitle, authUser, error, removeError }) {
 
 const mapStateToProps = ({ error }) => ({ error });
 
-export default connect(mapStateToProps, { authUser, removeError })(AuthForm);
+export default connect(mapStateToProps, { authUser })(AuthForm);
