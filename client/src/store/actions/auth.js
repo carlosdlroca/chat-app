@@ -14,6 +14,7 @@ export function logout() {
     return (dispatch) => {
         localStorage.clear();
         dispatch(setCurrentUser({}));
+        dispatch(removeError());
         history.push("/");
     };
 }
@@ -33,6 +34,7 @@ export function authUser(authAction, userData) {
             }
             localStorage.setItem("jwtToken", token);
             dispatch(setCurrentUser(user));
+            dispatch(removeError());
             history.push("/");
         } catch (err) {
             dispatch(addError("Something went wrong"));
