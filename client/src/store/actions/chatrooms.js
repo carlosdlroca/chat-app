@@ -11,7 +11,6 @@ export function getChatrooms() {
     return async (dispatch) => {
         try {
             const chatrooms = await api("GET", "/api/chatrooms");
-            console.log({ chatrooms });
             dispatch({ type: GET_CHATROOMS, chatrooms: chatrooms });
             dispatch(removeError());
             history.push("/chatrooms");
