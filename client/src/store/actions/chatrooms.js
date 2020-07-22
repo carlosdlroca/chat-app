@@ -13,7 +13,6 @@ export function getChatrooms() {
             const chatrooms = await api("GET", "/api/chatrooms");
             dispatch({ type: GET_CHATROOMS, chatrooms: chatrooms });
             dispatch(removeError());
-            history.push("/chatrooms");
         } catch (err) {
             dispatch(addError("There was a problem fetching all chatrooms"));
         }
@@ -46,6 +45,7 @@ export function deleteChatroom(chatroomID) {
             );
             dispatch({ type: DELETE_CHATROOM, chatroom_id });
             dispatch(removeError());
+            history.push("/");
         } catch (err) {
             dispatch(
                 addError(
