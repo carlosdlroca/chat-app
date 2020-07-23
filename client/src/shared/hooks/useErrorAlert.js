@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAlert } from "react-alert";
 
-export default function useErrorAlert(error, callback) {
+export default function useErrorAlert(error, callback = () => null) {
     const alert = useAlert();
     useEffect(() => {
         if (error && error.message) {
