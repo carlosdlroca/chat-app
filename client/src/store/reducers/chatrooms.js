@@ -13,7 +13,7 @@ export default function chatroomReducer(state = [], action) {
             return [...state, action.chatroom];
         case DELETE_CHATROOM:
             return state.filter(
-                (chatroom) => chatroom.id !== action.chatroom_id
+                (chatroom) => chatroom._id !== action.chatroom_id
             );
         default:
             return state;

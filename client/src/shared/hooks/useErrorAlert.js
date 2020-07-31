@@ -5,8 +5,9 @@ export default function useErrorAlert(error, callback = () => null) {
     const alert = useAlert();
     useEffect(() => {
         if (error && error.message) {
-            alert.error(error.message);
+            const { message } = error;
+            alert.error(message);
             callback();
         }
-    }, [error, alert]);
+    }, [error, alert, callback]);
 }

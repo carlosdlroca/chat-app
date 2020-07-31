@@ -1,11 +1,11 @@
 import React from "react";
 import AuthForm from "./AuthForm";
-import { StyledAuthPage } from "./Styles";
+import Page from "shared/components/Page";
 
 export default function AuthPage({ authMethod, authTitle }) {
     return (
-        <StyledAuthPage>
+        <Page>
             <AuthForm authMethod={authMethod} authTitle={authTitle} />
-        </StyledAuthPage>
+        </Page>
     );
 }

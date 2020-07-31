@@ -20,7 +20,7 @@ function AuthForm({ authMethod, authTitle, authUser, error }) {
             setUserData({ username: "", password: "" });
             document.activeElement.blur();
         }
-    }, [error, alert, removeError, setUserData]);
+    }, [error, alert, setUserData]);
 
     function handleInputChange(e) {
         const { target } = e;

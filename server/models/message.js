@@ -8,17 +8,19 @@ const messageSchema = mongoose.Schema(
             required: true,
             maxLength: 250,
         },
-        user_id: {
+        chatroom: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+            ref: "Chatroom",
         },
+        username: String,
+        user_id: String,
     },
     {
         timestamps: true,
     }
 );
 
-messageSchema.pre("remove", async function (next) {
+messageSchema.pre("deleteOne", async function (next) {
     try {
         let chatroom = await Chatroom.findById(this.chatroom);
         chatroom.messages.remove(this.id);

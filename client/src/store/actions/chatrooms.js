@@ -22,12 +22,12 @@ export function getChatrooms() {
 export function createChatroom(chatroom_name) {
     return async (dispatch) => {
         try {
-            const chatroom = await api("POST", "/api/chatrooms", {
+            const { chatroom } = await api("POST", "/api/chatrooms", {
                 name: chatroom_name,
             });
             dispatch({ type: CREATE_CHATROOM, chatroom });
             dispatch(removeError());
-            history.push(`/chatrooms/${chatroom.id}`);
+            history.push(`/chatrooms/${chatroom._id}`);
         } catch (err) {
             dispatch(
                 addError("There was a problem creating a chatroom. Try Again!")
