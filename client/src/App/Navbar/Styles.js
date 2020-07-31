@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-export const StyledNavbar = styled.nav`
+export const Navbar = styled.nav`
     display: flex;
     justify-content: center;
     padding: 4rem 1rem 1rem;
@@ -18,12 +19,9 @@ export const NavLinks = styled.div`
     }
 `;
 
-export const NavItem = styled.span`
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    color: white;
-`;
-
-export const NavLink = styled(NavItem)`
+export const NavLink = styled(Link)`
+    font-size: clamp(1.6rem, 5.1vw, 2.4rem);
+    color: ${({ profile }) => (profile ? "blue" : "white")};
     &:hover,
     &:focus {
         cursor: pointer;
