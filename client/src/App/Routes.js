@@ -2,6 +2,9 @@ import React from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import Navbar from "App/Navbar";
 import AuthPage from "Auth/AuthPage";
+import Chatrooms from "Chatrooms";
+import Chatroom from "Chatrooms/Chatroom";
+import CreateChatroom from "Chatrooms/Create";
 import history from "shared/history";
 
 export default function Routes() {
@@ -22,6 +25,17 @@ export default function Routes() {
                         <AuthPage authMethod={"signup"} authTitle={"Sign up"} />
                     )}
                 />
+                <Route
+                    exact
+                    path='/chatrooms'
+                    component={() => <Chatrooms />}
+                />
+                <Route
+                    exact
+                    path='/chatrooms/create'
+                    component={() => <CreateChatroom />}
+                />
+                <Route path='/chatrooms/:id' component={Chatroom} />
             </Switch>
         </Router>
     );
