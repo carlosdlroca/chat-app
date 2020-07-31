@@ -73,7 +73,25 @@ exports.joinChatroom = async function (req, res, next) {
 
 exports.updateChatroom = async function (req, res, next) {
     try {
-    } catch (errr) {
+    } catch (err) {
+        return next(err);
+    }
+};
+
+exports.getChatroomMessages = async function (req, res, next) {
+    try {
+        const chatroom = await Chatroom.findById(req.params.id).populate(
+            "messages"
+        );
+        if (chatroom.populated("messages")) {
+            return res.status(200).json({ messages: chatroom.messages });
+        } else {
+            return next({
+                status: 401,
+                message: "Could not find the chatroom messages",
+            });
+        }
+    } catch (err) {
         return next(err);
     }
 };
