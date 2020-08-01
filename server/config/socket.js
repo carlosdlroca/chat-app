@@ -7,7 +7,6 @@ function startConnection(server) {
         // Join Room
         socket.on("joinRoom", (room, user) => {
             console.log("joining room");
-            console.log({ user });
             socket.join(room);
             socket.to(room).emit("notification", "User has connected");
             socket.to(room).emit("userJoinedRoom", user);
@@ -16,7 +15,6 @@ function startConnection(server) {
         // Leave room
         socket.on("leaveRoom", (room, user) => {
             console.log("leaving room");
-            console.log({ user });
             socket.to(room).emit("notification", "User has disconnected");
             socket.to(room).emit("userLeftRoom", user);
             socket.leave(room);
@@ -26,22 +24,39 @@ function startConnection(server) {
         socket.on(
             "sendMessage",
             async (chatroomId, message, username, user_id) => {
+                console.log({ user_id });
                 try {
                     const chatroom = await Chatroom.findById(chatroomId);
                     const newMessage = await Message.create({
                         text: message,
                         username,
                         user_id,
+                        chatroom: chatroomId,
                     });
                     chatroom.messages.push(newMessage);
                     await chatroom.save();
                     io.to(chatroomId).emit("message", newMessage);
                 } catch (err) {
                     console.log(err);
-                    socket.to(chatroomId).emit("error", "something went wrong");
+                    io.to(chatroomId).emit("error", "something went wrong");
                 }
             }
         );
+
+        socket.on("clearChat", async (chatroomId, user_id) => {
+            try {
+                const chatroom = await Chatroom.findById(chatroomId);
+
+                await Message.deleteMany({ chatroom: chatroomId });
+                chatroom.messages = [];
+                await chatroom.save();
+
+                io.to(chatroomId).emit("clearedChat");
+            } catch (err) {
+                console.log(err);
+                io.to(chatroomId).emit("error", "oops");
+            }
+        });
     });
 }
 

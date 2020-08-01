@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Chatbox from "../Chatbox";
 import Page from "shared/components/Page";
+import { WarningButton } from "shared/components/Button";
 
 import socket from "shared/utils/socket";
 
@@ -32,9 +33,14 @@ function Chatroom({ user, chatroom, match }) {
         });
 
         socket.on("userLeftRoom", (departingUser) => {
+            if (users.length === 0) return;
             setUsers((usersList) =>
                 usersList.filter((u) => u.id === departingUser.id)
             );
+        });
+
+        socket.on("clearedChat", () => {
+            setMessages([]);
         });
 
         return () => {
@@ -54,7 +60,7 @@ function Chatroom({ user, chatroom, match }) {
             match.params.id,
             message,
             user.username,
-            user._id
+            user.id
         );
     }
 
@@ -65,6 +71,13 @@ function Chatroom({ user, chatroom, match }) {
     return (
         <Page>
             <p>Current users: {users.length}</p>
+            <WarningButton
+                onClick={() =>
+                    socket.emit("clearChat", match.params.id, user.id)
+                }
+            >
+                Clear chat
+            </WarningButton>
             <Chatbox messages={messages} addMessage={addMessage} />
         </Page>
     );
