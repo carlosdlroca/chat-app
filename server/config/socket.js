@@ -1,13 +1,8 @@
 let socketio = require("socket.io");
-let io;
 const { Chatroom, Message } = require("../models");
 
-function setupSocket(server) {
-    io = socketio(server);
-    startConnection();
-}
-
-function startConnection() {
+function startConnection(server) {
+    let io = socketio(server);
     io.sockets.on("connection", (socket) => {
         // Join Room
         socket.on("joinRoom", (room, user) => {
@@ -50,4 +45,4 @@ function startConnection() {
     });
 }
 
-module.exports = setupSocket;
+module.exports = startConnection;

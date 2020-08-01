@@ -13,7 +13,9 @@ const chatroomRoutes = require("./routes/chatrooms");
 const PORT = process.env.PORT || 3001;
 
 // Initialize and link socket to server
-require("./config/socket.js")(server);
+const startConnection = require("./config/socket.js");
+startConnection(server);
+
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 
