@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const Message = styled.div`
+    align-self: ${(props) => (props.isMyMessage ? "flex-end" : "flex-start")};
     border-radius: 1.5rem;
     padding: 1rem;
     background-color: rebeccapurple;
