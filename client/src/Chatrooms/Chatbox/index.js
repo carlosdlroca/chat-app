@@ -12,31 +12,16 @@ function Chatbox({ user, messages, addMessage, deleteMessage }) {
     const [message, setMessage] = useState("");
     function handleSubmit(e) {
         e.preventDefault();
-        addMessage(message);
+        const trimmedMsg = message.trim();
+        if (trimmedMsg == "") return;
+        addMessage(trimmedMsg);
         setMessage("");
-    }
-
-    function renderMessages(messages) {
-        return messages.map((message) => (
-            <Message
-                key={message._id}
-                isMyMessage={message.user_id === user.id}
-            >
-                <Message.Text>{message.text}</Message.Text>
-                <Message.Author>{message.username}</Message.Author>
-                {message.user_id === user.id && (
-                    <button onClick={() => deleteMessage(message._id)}>
-                        x
-                    </button>
-                )}
-            </Message>
-        ));
     }
 
     return (
         <ChatboxContainer>
             <ChatboxMessages>
-                {messages.length > 0 && renderMessages(messages)}
+                {messages.length > 0 && renderMessages(messages, user)}
             </ChatboxMessages>
             <ChatboxForm onSubmit={handleSubmit}>
                 <ChatboxInput
@@ -49,6 +34,18 @@ function Chatbox({ user, messages, addMessage, deleteMessage }) {
             </ChatboxForm>
         </ChatboxContainer>
     );
+}
+
+function renderMessages(messages, user) {
+    return messages.map((message) => (
+        <Message key={message._id} isMyMessage={message.user_id === user.id}>
+            <Message.Text>{message.text}</Message.Text>
+            <Message.Author>{message.username}</Message.Author>
+            {message.user_id === user.id && (
+                <button onClick={() => deleteMessage(message._id)}>x</button>
+            )}
+        </Message>
+    ));
 }
 
 export default Chatbox;
