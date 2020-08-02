@@ -5,12 +5,13 @@ export const ChatboxContainer = styled.section`
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 6rem;
     background: white;
+    height: 100%;
 `;
 
 export const ChatboxMessages = styled.ul`
     list-style: none;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
 `;
 
 export const ChatboxForm = styled.form`
