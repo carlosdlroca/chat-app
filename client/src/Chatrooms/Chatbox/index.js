@@ -21,7 +21,8 @@ function Chatbox({ user, messages, addMessage, deleteMessage }) {
     return (
         <ChatboxContainer>
             <ChatboxMessages>
-                {messages.length > 0 && renderMessages(messages, user)}
+                {messages.length > 0 &&
+                    renderMessages(messages, deleteMessage, user)}
             </ChatboxMessages>
             <ChatboxForm onSubmit={handleSubmit}>
                 <ChatboxInput
@@ -36,7 +37,7 @@ function Chatbox({ user, messages, addMessage, deleteMessage }) {
     );
 }
 
-function renderMessages(messages, user) {
+function renderMessages(messages, deleteMessage, user) {
     return messages.map((message) => (
         <Message key={message._id} isMyMessage={message.user_id === user.id}>
             <Message.Text>{message.text}</Message.Text>
