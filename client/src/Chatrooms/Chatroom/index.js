@@ -39,6 +39,12 @@ function Chatroom({ user, chatroom, match }) {
             );
         });
 
+        socket.on("deleteMessage", (messageId) => {
+            setMessages((messages) =>
+                messages.filter((msg) => msg._id !== messageId)
+            );
+        });
+
         socket.on("clearedChat", () => {
             setMessages([]);
         });
@@ -64,9 +70,20 @@ function Chatroom({ user, chatroom, match }) {
         );
     }
 
+    function deleteMessage(messageId) {
+        socket.emit("attemptDeleteMessage", match.params.id, messageId);
+    }
+
     if (!messages) {
         return <h2>Loading...</h2>;
     }
+
+    const chatboxProps = {
+        user,
+        messages,
+        addMessage,
+        deleteMessage,
+    };
 
     return (
         <Page>
@@ -78,7 +95,7 @@ function Chatroom({ user, chatroom, match }) {
             >
                 Clear chat
             </WarningButton>
-            <Chatbox messages={messages} addMessage={addMessage} />
+            <Chatbox {...chatboxProps} />
         </Page>
     );
 }
@@ -97,12 +114,13 @@ async function fetchChatroomMessages(chatroom_id, callback) {
 
 const mapStateToProps = ({ chatrooms, currentUser }, ownProps) => {
     const { id } = ownProps.match.params;
-    if (chatrooms.length < 1) {
+    const { chatrooms: chatroomsArr } = chatrooms;
+    if (chatroomsArr.length < 1) {
         return { chatroom: false };
     }
     return {
         user: currentUser.user,
-        chatroom: chatrooms.filter((chatroom) => chatroom._id === id)[0],
+        chatroom: chatroomsArr.filter((chatroom) => chatroom._id === id)[0],
     };
 };
 

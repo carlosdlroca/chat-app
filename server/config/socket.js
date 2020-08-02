@@ -24,7 +24,6 @@ function startConnection(server) {
         socket.on(
             "sendMessage",
             async (chatroomId, message, username, user_id) => {
-                console.log({ user_id });
                 try {
                     const chatroom = await Chatroom.findById(chatroomId);
                     const newMessage = await Message.create({
@@ -43,10 +42,23 @@ function startConnection(server) {
             }
         );
 
+        socket.on("attemptDeleteMessage", async (chatroomId, messageId) => {
+            try {
+                await Message.deleteOne({ _id: messageId });
+                const chatroom = await Chatroom.findById(chatroomId);
+                chatroom.messages = chatroom.messages.filter(
+                    (messageId) => messageId !== messageId
+                );
+                await chatroom.save();
+                io.to(chatroomId).emit("deleteMessage", messageId);
+            } catch (err) {
+                console.log({ err });
+            }
+        });
+
         socket.on("clearChat", async (chatroomId, user_id) => {
             try {
                 const chatroom = await Chatroom.findById(chatroomId);
-
                 await Message.deleteMany({ chatroom: chatroomId });
                 chatroom.messages = [];
                 await chatroom.save();
