@@ -20,15 +20,4 @@ const messageSchema = mongoose.Schema(
     }
 );
 
-messageSchema.pre("deleteOne", async function (next) {
-    try {
-        let chatroom = await Chatroom.findById(this.chatroom);
-        chatroom.messages.remove(this.id);
-        await chatroom.save();
-        return next();
-    } catch (err) {
-        return next(err);
-    }
-});
-
 module.exports = mongoose.model("Message", messageSchema);
