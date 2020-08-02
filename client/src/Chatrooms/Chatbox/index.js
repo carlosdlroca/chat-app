@@ -8,13 +8,31 @@ import {
 import Message from "./Message";
 import { PrimaryButton } from "shared/components/Button";
 
-function Chatbox({ messages, addMessage }) {
+function Chatbox({ user, messages, addMessage, deleteMessage }) {
     const [message, setMessage] = useState("");
     function handleSubmit(e) {
         e.preventDefault();
         addMessage(message);
         setMessage("");
     }
+
+    function renderMessages(messages) {
+        return messages.map((message) => (
+            <Message
+                key={message._id}
+                isMyMessage={message.user_id === user.id}
+            >
+                <Message.Text>{message.text}</Message.Text>
+                <Message.Author>{message.username}</Message.Author>
+                {message.user_id === user.id && (
+                    <button onClick={() => deleteMessage(message._id)}>
+                        x
+                    </button>
+                )}
+            </Message>
+        ));
+    }
+
     return (
         <ChatboxContainer>
             <ChatboxMessages>
@@ -31,15 +49,6 @@ function Chatbox({ messages, addMessage }) {
             </ChatboxForm>
         </ChatboxContainer>
     );
-}
-
-function renderMessages(messages) {
-    return messages.map((message) => (
-        <Message key={message._id}>
-            <Message.Text>{message.text}</Message.Text>
-            <Message.Author>{message.username}</Message.Author>
-        </Message>
-    ));
 }
 
 export default Chatbox;
