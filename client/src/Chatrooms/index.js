@@ -2,12 +2,23 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { connect } from "react-redux";
-import { getChatrooms } from "store/actions/chatrooms";
+import { getChatrooms, deleteChatroom } from "store/actions/chatrooms";
 
-import { PrimaryButton, SecondaryButton } from "shared/components/Button/";
+import { ChatroomsList, ChatroomItem } from "./Styles";
+import {
+    PrimaryButton,
+    SecondaryButton,
+    WarningButton,
+} from "shared/components/Button/";
 import Centered from "shared/components/Layout/Centered";
 
-function Chatrooms({ chatrooms, getChatrooms, isLoading }) {
+function Chatrooms({
+    user,
+    chatrooms,
+    getChatrooms,
+    deleteChatroom,
+    isLoading,
+}) {
     useEffect(() => {
         if (chatrooms.length < 1) {
             getChatrooms();
@@ -25,26 +36,46 @@ function Chatrooms({ chatrooms, getChatrooms, isLoading }) {
                     <PrimaryButton>Create a chatroom</PrimaryButton>
                 </Link>
             </Centered>
-            {chatrooms.length > 0 &&
-                chatrooms.map((chatroom) => (
-                    <div key={chatroom._id}>
-                        <h2>{chatroom.name}</h2>
-                        <Link to={`/chatrooms/${chatroom._id}`}>
-                            <SecondaryButton>Join</SecondaryButton>
-                        </Link>
-                    </div>
-                ))}
+            <ChatroomsList>
+                {chatrooms.length > 0 &&
+                    renderChatrooms(user, chatrooms, deleteChatroom)}
+            </ChatroomsList>
         </div>
     );
 }
 
-const mapStateToProps = ({ chatrooms, error }) => {
-    console.log({ chatrooms });
+function renderChatrooms(user, chatrooms, deleteChatroom) {
+    return chatrooms.map((chatroom) => (
+        <ChatroomItem key={chatroom._id}>
+            <ChatroomItem.Info>
+                <span>
+                    Charoom name:{" "}
+                    <ChatroomItem.Name>{chatroom.name}</ChatroomItem.Name>
+                </span>
+            </ChatroomItem.Info>
+            <ChatroomItem.Options>
+                <Link to={`/chatrooms/${chatroom._id}`}>
+                    <SecondaryButton>Join</SecondaryButton>
+                </Link>
+                {user.id === chatroom.owner && (
+                    <WarningButton onClick={() => deleteChatroom(chatroom._id)}>
+                        Delete
+                    </WarningButton>
+                )}
+            </ChatroomItem.Options>
+        </ChatroomItem>
+    ));
+}
+
+const mapStateToProps = ({ currentUser, chatrooms }) => {
     const { chatrooms: chatroomsArr, isLoading } = chatrooms;
+    const { user } = currentUser;
     return {
         chatrooms: chatroomsArr,
         isLoading,
-        error,
+        user,
     };
 };
-export default connect(mapStateToProps, { getChatrooms })(Chatrooms);
+export default connect(mapStateToProps, { getChatrooms, deleteChatroom })(
+    Chatrooms
+);
