@@ -12,8 +12,10 @@ export function getChatrooms() {
     return async (dispatch) => {
         try {
             dispatch(setIsLoadingState(true));
-            const chatrooms = await api("GET", "/api/chatrooms");
-            console.log({ message: "Got chatrooms", chatrooms });
+            const { chatrooms, error } = await api("GET", "/api/chatrooms");
+            if (error) {
+                return dispatch(addError(error.message));
+            }
             dispatch({ type: GET_CHATROOMS, chatrooms });
             dispatch(removeError());
         } catch (err) {
@@ -28,9 +30,12 @@ export function createChatroom(chatroom_name) {
     return async (dispatch) => {
         try {
             dispatch(setIsLoadingState(true));
-            const { chatroom } = await api("POST", "/api/chatrooms", {
+            const { chatroom, error } = await api("POST", "/api/chatrooms", {
                 name: chatroom_name,
             });
+            if (error) {
+                return dispatch(addError(error.message));
+            }
             dispatch({ type: CREATE_CHATROOM, chatroom });
             dispatch(removeError());
             history.push(`/chatrooms/${chatroom._id}`);
@@ -48,10 +53,13 @@ export function deleteChatroom(chatroomID) {
     return async (dispatch) => {
         try {
             dispatch(setIsLoadingState(true));
-            const chatroom_id = await api(
+            const { chatroom_id, error } = await api(
                 "DELETE",
                 `/api/chatrooms/${chatroomID}`
             );
+            if (error) {
+                return dispatch(addError(error.message));
+            }
             dispatch({ type: DELETE_CHATROOM, chatroom_id });
             dispatch(removeError());
             history.push("/");
