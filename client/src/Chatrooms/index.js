@@ -12,6 +12,8 @@ import {
 } from "shared/components/Button/";
 import Centered from "shared/components/Layout/Centered";
 
+import withError from "shared/hocs/withError";
+
 function Chatrooms({
     user,
     chatrooms,
@@ -20,10 +22,11 @@ function Chatrooms({
     isLoading,
 }) {
     useEffect(() => {
-        if (chatrooms.length < 1) {
+        if (isLoading && chatrooms.length < 1) {
             getChatrooms();
         }
-    }, [chatrooms, getChatrooms]);
+        //eslint-disable-next-line
+    }, [chatrooms, isLoading]);
 
     if (isLoading && chatrooms.length === 0) {
         return <h1>Loading...</h1>;
@@ -76,6 +79,10 @@ const mapStateToProps = ({ currentUser, chatrooms }) => {
         user,
     };
 };
-export default connect(mapStateToProps, { getChatrooms, deleteChatroom })(
-    Chatrooms
-);
+
+const ConnectedChatrooms = connect(mapStateToProps, {
+    getChatrooms,
+    deleteChatroom,
+})(Chatrooms);
+
+export default withError(ConnectedChatrooms);

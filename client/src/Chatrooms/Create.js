@@ -5,6 +5,7 @@ import Page from "shared/components/Page";
 
 import { connect } from "react-redux";
 import { createChatroom } from "store/actions/chatrooms";
+import withError from "shared/hocs/withError";
 
 function CreateChatroomForm({ createChatroom }) {
     const [chatroomName, setChatroomName] = useState("");
@@ -33,4 +34,7 @@ function CreateChatroomForm({ createChatroom }) {
     );
 }
 
-export default connect(null, { createChatroom })(CreateChatroomForm);
+const ConnectedComponent = connect(null, { createChatroom })(
+    CreateChatroomForm
+);
+export default withError(ConnectedComponent);
