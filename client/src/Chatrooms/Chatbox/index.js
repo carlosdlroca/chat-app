@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
     ChatboxContainer,
     ChatboxForm,
@@ -10,6 +10,12 @@ import { PrimaryButton } from "shared/components/Button";
 
 function Chatbox({ user, messages, addMessage, deleteMessage }) {
     const [message, setMessage] = useState("");
+    const chatboxRef = useRef(null);
+
+    useEffect(() => {
+        chatboxRef.current.scrollTo(0, chatboxRef.current.scrollHeight);
+    }, [messages]);
+
     function handleSubmit(e) {
         e.preventDefault();
         const trimmedMsg = message.trim();
@@ -20,7 +26,7 @@ function Chatbox({ user, messages, addMessage, deleteMessage }) {
 
     return (
         <ChatboxContainer>
-            <ChatboxMessages>
+            <ChatboxMessages ref={chatboxRef}>
                 {messages.length > 0 &&
                     renderMessages(messages, deleteMessage, user)}
             </ChatboxMessages>
