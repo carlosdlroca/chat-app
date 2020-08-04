@@ -4,7 +4,7 @@ import {
     DELETE_CHATROOM,
     SET_LOADING_STATE,
 } from "../actionTypes";
-import { addError, removeError } from "./errors";
+import { addError } from "./errors";
 import api from "shared/utils/api";
 import history from "shared/history";
 
@@ -17,7 +17,6 @@ export function getChatrooms() {
                 return dispatch(addError(error.message));
             }
             dispatch({ type: GET_CHATROOMS, chatrooms });
-            dispatch(removeError());
         } catch (err) {
             dispatch(addError("There was a problem fetching all chatrooms"));
         } finally {
@@ -37,7 +36,6 @@ export function createChatroom(chatroom_name) {
                 return dispatch(addError(error.message));
             }
             dispatch({ type: CREATE_CHATROOM, chatroom });
-            dispatch(removeError());
             history.push(`/chatrooms/${chatroom._id}`);
         } catch (err) {
             dispatch(
@@ -61,7 +59,6 @@ export function deleteChatroom(chatroomID) {
                 return dispatch(addError(error.message));
             }
             dispatch({ type: DELETE_CHATROOM, chatroom_id });
-            dispatch(removeError());
             history.push("/");
         } catch (err) {
             dispatch(
