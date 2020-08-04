@@ -52,6 +52,7 @@ function Chatroom({ user, chatroom, match }) {
         return () => {
             socket.emit("leaveRoom", match.params.id, user);
         };
+        // eslint-disable-next-line
     }, [match.params.id]);
 
     useEffect(() => {
