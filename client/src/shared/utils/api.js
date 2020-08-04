@@ -14,7 +14,7 @@ export default async function api(method, url, body) {
         return data;
     } catch (error) {
         return {
-            error: { message: "Something went wrong using api function" },
+            error: { message: "Something went wrong with our connection" },
         };
     }
 }
