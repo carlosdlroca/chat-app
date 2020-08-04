@@ -22,7 +22,7 @@ function Chatrooms({
     isLoading,
 }) {
     useEffect(() => {
-        if (isLoading && chatrooms.length < 1) {
+        if (!isLoading && chatrooms.length < 1) {
             getChatrooms();
         }
         //eslint-disable-next-line
