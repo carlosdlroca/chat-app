@@ -34,7 +34,7 @@ function startConnection(server) {
                     });
                     chatroom.messages.push(newMessage);
                     await chatroom.save();
-                    io.to(chatroomId).emit("recieveMessage", newMessage);
+                    io.to(chatroomId).emit("receiveMessage", newMessage);
                 } catch (err) {
                     console.log(err);
                     io.to(chatroomId).emit("error", "something went wrong");
