@@ -24,7 +24,7 @@ function Chatroom({ user, chatroom, match }) {
     useEffect(() => {
         socket.emit("joinRoom", match.params.id, user);
         // Listen to when a new message is sent
-        socket.on("message", (message) => {
+        socket.on("receiveMessage", (message) => {
             setMessages((messages) => [...messages, message]);
         });
 
@@ -62,7 +62,7 @@ function Chatroom({ user, chatroom, match }) {
 
     function addMessage(message) {
         socket.emit(
-            "sendMessage",
+            "attemptSendMessage",
             match.params.id,
             message,
             user.username,
@@ -90,7 +90,7 @@ function Chatroom({ user, chatroom, match }) {
             <p>Current users: {users.length}</p>
             <WarningButton
                 onClick={() =>
-                    socket.emit("clearChat", match.params.id, user.id)
+                    socket.emit("attemptClearChat", match.params.id, user.id)
                 }
             >
                 Clear chat

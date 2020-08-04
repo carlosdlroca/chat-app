@@ -22,7 +22,7 @@ function startConnection(server) {
 
         // Send Message in chatroom
         socket.on(
-            "sendMessage",
+            "attemptSendMessage",
             async (chatroomId, message, username, user_id) => {
                 try {
                     const chatroom = await Chatroom.findById(chatroomId);
@@ -34,7 +34,7 @@ function startConnection(server) {
                     });
                     chatroom.messages.push(newMessage);
                     await chatroom.save();
-                    io.to(chatroomId).emit("message", newMessage);
+                    io.to(chatroomId).emit("recieveMessage", newMessage);
                 } catch (err) {
                     console.log(err);
                     io.to(chatroomId).emit("error", "something went wrong");
@@ -56,7 +56,7 @@ function startConnection(server) {
             }
         });
 
-        socket.on("clearChat", async (chatroomId, user_id) => {
+        socket.on("attemptClearChat", async (chatroomId, user_id) => {
             try {
                 const chatroom = await Chatroom.findById(chatroomId);
                 await Message.deleteMany({ chatroom: chatroomId });
