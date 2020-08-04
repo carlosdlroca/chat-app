@@ -1,26 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { Form, FormTitle, InputGroup, Input } from "shared/components/Form";
 import { PrimaryButton } from "shared/components/Button";
-import { useAlert } from "react-alert";
 
 import { connect } from "react-redux";
 import { authUser } from "store/actions/auth";
 
-function AuthForm({ authMethod, authTitle, authUser, error }) {
+function AuthForm({ authMethod, authTitle, authUser }) {
     const [userData, setUserData] = useState({
         username: "",
         password: "",
     });
-    const alert = useAlert();
-
-    useEffect(() => {
-        if (error && error.message) {
-            alert.error(error.message);
-            setUserData({ username: "", password: "" });
-            document.activeElement.blur();
-        }
-    }, [error, alert, setUserData]);
 
     function handleInputChange(e) {
         const { target } = e;
@@ -63,6 +53,4 @@ function AuthForm({ authMethod, authTitle, authUser, error }) {
     );
 }
 
-const mapStateToProps = ({ error }) => ({ error });
-
-export default connect(mapStateToProps, { authUser })(AuthForm);
+export default connect(null, { authUser })(AuthForm);
