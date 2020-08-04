@@ -1,5 +1,4 @@
-const jwt = require("jsonwebtoken");
-const { User, Chatroom } = require("../models");
+const { User } = require("../models");
 
 const ERROR_MESSAGE = {
     status: 401,
@@ -11,12 +10,8 @@ exports.ensureUserOwnsChatroom = async function (req, res, next) {
         if (!req.user) {
             return next(ERROR_MESSAGE);
         }
-
-        const { id: user_id } = req.user;
-        const user = await User.findById(id);
-        const userOwnsChatroom = user.chatrooms_joined.some(
-            (chatroom_id) => chatroom_id === user_id
-        );
+        const user = await User.findById(req.user.id);
+        const userOwnsChatroom = user.chatrooms_owned.includes(req.params.id);
         if (userOwnsChatroom) {
             return next();
         }
