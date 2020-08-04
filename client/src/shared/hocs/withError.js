@@ -9,12 +9,8 @@ export default function withError(Component) {
         useEffect(() => {
             if (error && error.message) {
                 alert.error(error.message);
+                removeError();
             }
-            return () => {
-                if (error && error.message) {
-                    removeError();
-                }
-            };
         }, [error, removeError, error.message, alert]);
         return <Component {...props} />;
     }
