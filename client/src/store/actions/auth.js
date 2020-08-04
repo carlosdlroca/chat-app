@@ -1,5 +1,5 @@
 import { SET_CURRENT_USER } from "../actionTypes";
-import { addError, removeError } from "./errors";
+import { addError } from "./errors";
 import api from "shared/utils/api";
 import history from "shared/history";
 
