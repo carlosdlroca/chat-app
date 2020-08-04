@@ -13,9 +13,9 @@ function Chatbox({ user, messages, addMessage, deleteMessage }) {
     function handleSubmit(e) {
         e.preventDefault();
         const trimmedMsg = message.trim();
-        if (trimmedMsg == "") return;
-        addMessage(trimmedMsg);
+        if (trimmedMsg === "") return;
         setMessage("");
+        addMessage(trimmedMsg);
     }
 
     return (
