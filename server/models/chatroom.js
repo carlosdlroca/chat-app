@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const User = require("./user");
-const Message = require("./message");
 
 const chatroomSchema = mongoose.Schema({
     name: { type: String, required: true },
@@ -9,31 +7,34 @@ const chatroomSchema = mongoose.Schema({
     messages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
 });
 
-chatroomSchema.pre("deleteOne", async function (next) {
-    try {
-        // Delete chatroom reference from chatroom owners list
-        let owner = await User.findById(this.owner);
-        await owner.chatrooms_owned.deleteOne(this.id);
+// chatroomSchema.pre("deleteOne", async function (next) {
+//     try {
+//         console.log("going to deleteOne chatroom");
+//         // Delete chatroom reference from chatroom owners list
+//         let owner = await User.findById(this.owner);
+//         console.log(`found user: ${user.username}`);
+//         owner.chatrooms_owned = owner.chatrooms_owned.filter(
+//             (chId) => chId !== this._id
+//         );
 
-        // Remove this chatrooms reference in each chatroom users list
-        User.deleteOne({ chatrooms_joined: this.id });
-        await user.save();
-        // Delete every message in this chatroom
-        for (const msg_id of this.messages) {
-            await Message.deleteOne({ id: msg_id });
-        }
-        // Delete chatroom reference from user's chatrooms_joined
-        for (const user_id of this.users) {
-            const user = await User.findById(user_id);
-            await user.chatrooms_joined.deleteOne({ id: this.id });
-            await user.save();
-        }
-
-        return next();
-    } catch (err) {
-        return next(err);
-    }
-});
+//         // Delete every message in this chatroom
+//         for (const msg_id of this.messages) {
+//             await Message.deleteOne({ id: msg_id });
+//         }
+//         // Delete chatroom reference from user's chatrooms_joined
+//         for (const user_id of this.users) {
+//             const user = await User.findById(user_id);
+//             user.chatrooms_joined = user.chatrooms_joined.filter(
+//                 (chId) => chId !== this._id
+//             );
+//             await user.save();
+//         }
+//         console.log("successfully deleted chatroom");
+//         return next();
+//     } catch (err) {
+//         return next(err);
+//     }
+// });
 
 chatroomSchema.methods.addUser = async function (user_id, next) {
     try {
