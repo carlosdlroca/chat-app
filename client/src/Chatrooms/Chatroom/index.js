@@ -49,6 +49,10 @@ function Chatroom({ user, chatroom, match }) {
             setMessages([]);
         });
 
+        socket.on("notification", (notification) => {
+            setMessages((messages) => [...messages, notification]);
+        });
+
         return () => {
             socket.emit("leaveRoom", match.params.id, user);
         };

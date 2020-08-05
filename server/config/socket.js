@@ -8,14 +8,18 @@ function startConnection(server) {
         socket.on("joinRoom", (room, user) => {
             console.log("joining room");
             socket.join(room);
-            socket.to(room).emit("notification", "User has connected");
+            socket
+                .to(room)
+                .emit("notification", `${user.username} has connected`);
             socket.to(room).emit("userJoinedRoom", user);
         });
 
         // Leave room
         socket.on("leaveRoom", (room, user) => {
             console.log("leaving room");
-            socket.to(room).emit("notification", "User has disconnected");
+            socket
+                .to(room)
+                .emit("notification", `${user.username} has disconnected`);
             socket.to(room).emit("userLeftRoom", user);
             socket.leave(room);
         });
