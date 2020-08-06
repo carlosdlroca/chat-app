@@ -1,4 +1,5 @@
 import {
+    GET_CHATROOM,
     GET_CHATROOMS,
     CREATE_CHATROOM,
     DELETE_CHATROOM,
@@ -66,6 +67,27 @@ export function deleteChatroom(chatroomID) {
                     "There was an error deleting your chatroom. Please Try Again!"
                 )
             );
+        } finally {
+            dispatch(setIsLoadingState(false));
+        }
+    };
+}
+
+export function getChatroomWithId(chatroomID) {
+    return async (dispatch) => {
+        try {
+            dispatch(setIsLoadingState(true));
+            const { chatroom, error } = await api(
+                "GET",
+                `/api/chatrooms/${chatroomID}`
+            );
+
+            if (error) {
+                return dispatch(addError(error.message));
+            }
+            dispatch({ type: GET_CHATROOM, chatroom });
+        } catch (err) {
+            dispatch(addError("Could not find that chatroom, sorry"));
         } finally {
             dispatch(setIsLoadingState(false));
         }

@@ -1,4 +1,5 @@
 import {
+    GET_CHATROOM,
     GET_CHATROOMS,
     CREATE_CHATROOM,
     DELETE_CHATROOM,
@@ -12,6 +13,11 @@ const initialState = {
 
 export default function chatroomReducer(state = initialState, action) {
     switch (action.type) {
+        case GET_CHATROOM:
+            return {
+                ...state,
+                chatrooms: [...state.chatrooms, action.chatroom],
+            };
         case GET_CHATROOMS:
             return {
                 ...state,
