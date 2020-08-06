@@ -16,13 +16,15 @@ function Chatroom({ user, chatroom, match }) {
 
     const history = useHistory();
     useEffect(() => {
-        if (!chatroom) {
-            history.push("/");
+        if (!chatroom || !user) {
+            history.push("/chatrooms");
         }
-    }, [history, chatroom]);
+    }, [history, chatroom, user]);
 
     useEffect(() => {
-        socket.emit("joinRoom", match.params.id, user);
+        if (user) {
+            socket.emit("joinRoom", match.params.id, user);
+        }
         // Listen to when a new message is sent
         socket.on("receiveMessage", (message) => {
             setMessages((messages) => [...messages, message]);
@@ -51,7 +53,9 @@ function Chatroom({ user, chatroom, match }) {
         });
 
         return () => {
-            socket.emit("leaveRoom", match.params.id, user);
+            if (user) {
+                socket.emit("leaveRoom", match.params.id, user);
+            }
         };
         // eslint-disable-next-line
     }, [match.params.id]);
