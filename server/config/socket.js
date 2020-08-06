@@ -3,24 +3,48 @@ const { Chatroom, Message } = require("../models");
 
 function startConnection(server) {
     let io = socketio(server);
+
     io.sockets.on("connection", (socket) => {
         // Join Room
         socket.on("joinRoom", (room, user) => {
-            console.log("joining room");
             socket.join(room);
             socket
                 .to(room)
                 .emit("notification", `${user.username} has connected`);
-            socket.to(room).emit("userJoinedRoom", user);
+
+            // attatch joined user to this specific room
+            if (!io.nsps["/"].adapter.rooms[room].users) {
+                io.nsps["/"].adapter.rooms[room].users = [user];
+            } else {
+                io.nsps["/"].adapter.rooms[room].users.push(user);
+            }
+            io.in(room).emit(
+                "userJoinedRoom",
+                io.nsps["/"].adapter.rooms[room].users
+            );
         });
 
         // Leave room
-        socket.on("leaveRoom", (room, user) => {
-            console.log("leaving room");
+        socket.on("leaveRoom", (room, userLeaving) => {
             socket
                 .to(room)
-                .emit("notification", `${user.username} has disconnected`);
-            socket.to(room).emit("userLeftRoom", user);
+                .emit(
+                    "notification",
+                    `${userLeaving.username} has disconnected`
+                );
+            let newUsersList;
+            if (
+                io.nsps["/"].adapter.rooms[room].users == null ||
+                io.nsps["/"].adapter.rooms[room].users.length < 1
+            ) {
+                newUsersList = [];
+            } else {
+                newUsersList = io.nsps["/"].adapter.rooms[room].users.filter(
+                    (user) => user.id !== userLeaving.id
+                );
+                io.nsps["/"].adapter.rooms[room].users = [...newUsersList];
+            }
+            io.in(room).emit("userLeftRoom", newUsersList);
             socket.leave(room);
         });
 

@@ -28,15 +28,12 @@ function Chatroom({ user, chatroom, match }) {
             setMessages((messages) => [...messages, message]);
         });
 
-        socket.on("userJoinedRoom", (newUser) => {
-            setUsers((usersList) => [...usersList, newUser]);
+        socket.on("userJoinedRoom", (newUsersList) => {
+            setUsers(newUsersList);
         });
 
-        socket.on("userLeftRoom", (departingUser) => {
-            if (users.length === 0) return;
-            setUsers((usersList) =>
-                usersList.filter((u) => u.id === departingUser.id)
-            );
+        socket.on("userLeftRoom", (newUsersList) => {
+            setUsers(newUsersList);
         });
 
         socket.on("deleteMessage", (messageId) => {
