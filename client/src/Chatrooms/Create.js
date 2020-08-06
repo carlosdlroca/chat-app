@@ -16,7 +16,7 @@ function CreateChatroomForm({ createChatroom }) {
     }
 
     return (
-        <Page>
+        <div>
             <Form onSubmit={handleOnSubmit}>
                 <FormTitle>Create a Chatroom</FormTitle>
                 <InputGroup>
@@ -30,7 +30,7 @@ function CreateChatroomForm({ createChatroom }) {
                 </InputGroup>
                 <PrimaryButton>Create</PrimaryButton>
             </Form>
-        </Page>
+        </div>
     );
 }
 

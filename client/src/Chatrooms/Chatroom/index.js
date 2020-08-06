@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Chatbox from "../Chatbox";
-import Page from "shared/components/Page";
 import { WarningButton } from "shared/components/Button";
 
 import socket from "shared/utils/socket";
@@ -92,7 +91,7 @@ function Chatroom({ user, chatroom, match }) {
     };
 
     return (
-        <Page>
+        <div>
             <p>Current users: {users.length}</p>
             <WarningButton
                 onClick={() =>
@@ -102,7 +101,7 @@ function Chatroom({ user, chatroom, match }) {
                 Clear chat
             </WarningButton>
             <Chatbox {...chatboxProps} />
-        </Page>
+        </div>
     );
 }
 
